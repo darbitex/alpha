@@ -1,0 +1,11 @@
+build/
+node_modules/
+.env
+.env.*
+*.log
+.aptos/
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
