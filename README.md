@@ -1,6 +1,6 @@
-# Darbitex (alpha — DEPRECATED)
+# Darbitex (alpha — FROZEN)
 
-> ⚠️ **This repository is deprecated as of 2026-04-10.** Darbitex alpha is shutting down because its package upgrade authority is held by a single wallet, which would allow that key to override the 3-of-5 admin multisig via a malicious upgrade. Successor: **[darbitex/alpha-v1](https://github.com/darbitex/alpha-v1)** — same contracts, published from a multisig account so upgrades require the same threshold as admin actions. Full rationale in [DEPRECATED.md](./DEPRECATED.md).
+> 🧊 **This package is frozen on Aptos mainnet as of 2026-04-10.** Every function aborts, the upgrade policy is `immutable`, and no future change is possible — including from the original publisher wallet. The deprecation details are in [DEPRECATED.md](./DEPRECATED.md); the freeze rationale and verification are in [FROZEN.md](./FROZEN.md). Successor: **[darbitex/alpha-v1](https://github.com/darbitex/alpha-v1)**.
 
 Permissionless V4-style Hooks DEX on Aptos. Canonical pools, unowned, composable,
 0.01% fee, decentralized frontend on Walrus.
