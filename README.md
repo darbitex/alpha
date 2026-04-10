@@ -1,9 +1,10 @@
-# Darbitex
+# Darbitex (alpha — DEPRECATED)
+
+> ⚠️ **This repository is deprecated as of 2026-04-10.** Darbitex alpha is shutting down because its package upgrade authority is held by a single wallet, which would allow that key to override the 3-of-5 admin multisig via a malicious upgrade. Successor: **[darbitex/alpha-v1](https://github.com/darbitex/alpha-v1)** — same contracts, published from a multisig account so upgrades require the same threshold as admin actions. Full rationale in [DEPRECATED.md](./DEPRECATED.md).
 
 Permissionless V4-style Hooks DEX on Aptos. Canonical pools, unowned, composable,
 0.01% fee, decentralized frontend on Walrus.
 
-**Live:** https://darbitex.wal.app
 **X / Twitter:** https://x.com/Darbitex
 
 ## Architecture
