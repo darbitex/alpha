@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Darbitex — retired</title>
+<meta name="description" content="Darbitex alpha has been retired. A successor is being built with the upgrade key held by a multisig from day one.">
+<meta property="og:title" content="Darbitex — retired">
+<meta property="og:description" content="Alpha shut down 2026-04-10. Successor in progress with multisig publisher.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --fg: #e8e8e8;
+    --dim: #888;
+    --accent: #00ff88;
+    --line: #1a1a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+  main {
+    max-width: 560px;
+    width: 100%;
+  }
+  .mark {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 32px;
+    opacity: 0.9;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .tag {
+    color: var(--dim);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  p {
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .dim {
+    color: var(--dim);
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 32px 0;
+  }
+  h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  a:hover {
+    border-bottom-color: var(--accent);
+  }
+  ul {
+    list-style: none;
+  }
+  li {
+    padding: 6px 0;
+    color: var(--dim);
+    font-size: 13px;
+  }
+  li span {
+    color: var(--fg);
+  }
+  code {
+    font-family: inherit;
+    color: var(--accent);
+    font-size: 12px;
+    word-break: break-all;
+  }
+  footer {
+    margin-top: 48px;
+    font-size: 12px;
+    color: var(--dim);
+  }
+</style>
+</head>
+<body>
+<main>
+  <svg class="mark" viewBox="0 0 48 48" fill="none" stroke="#00ff88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 36 Q 18 36 24 24 T 42 12"/>
+    <circle cx="42" cy="12" r="2.5" fill="#00ff88"/>
+  </svg>
+
+  <h1>Darbitex alpha is retired.</h1>
+  <p class="tag">Shut down 2026-04-10. All liquidity withdrawn.</p>
+
+  <p>
+    The alpha deployment held its package upgrade authority in a single wallet.
+    On Aptos, a compatible upgrade can rewrite function bodies — which means
+    one key could override the admin multisig, drain reserves, or add a rug
+    entry. Multisig admin without multisig publisher is security theater.
+  </p>
+  <p>
+    There is no in-place fix. Upgrade authority is bound to the publisher
+    account at publish time, and cannot be transferred. The fix is a clean
+    redeploy from a multisig publisher account — so from day one, upgrading
+    the package requires the same threshold as changing the admin.
+  </p>
+  <p>
+    A successor is being built. The contracts are essentially the same. What
+    changes is who holds the key.
+  </p>
+
+  <hr>
+
+  <h2>Links</h2>
+  <ul>
+    <li><span><a href="https://github.com/darbitex/alpha/blob/main/DEPRECATED.md">Full rationale (DEPRECATED.md)</a></span></li>
+    <li><span><a href="https://github.com/darbitex/alpha">Alpha source (archived)</a></span></li>
+    <li><span><a href="https://x.com/Darbitex">@Darbitex on X</a></span></li>
+  </ul>
+
+  <footer>
+    Do not interact with the alpha package. It will remain on-chain at its
+    address forever with empty pools — that is how Move packages work.
+  </footer>
+</main>
+</body>
+</html>
