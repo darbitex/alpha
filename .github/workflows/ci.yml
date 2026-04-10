@@ -1,0 +1,34 @@
+name: CI                                                                                                                                                                                    
+                                                            
+  on:
+    push:
+      branches: [main]
+    pull_request:
+      branches: [main]
+
+  jobs:                                                                                                                                                                                       
+    compile-contracts:
+      name: Compile Move contracts                                                                                                                                                            
+      runs-on: ubuntu-latest                                
+      steps:
+        - name: Checkout                                                                                                                                                                      
+          uses: actions/checkout@v4
+                                                                                                                                                                                              
+        - name: Install Aptos CLI                           
+          run: |
+            curl -fsSL "https://aptos.dev/scripts/install_cli.sh" | sh
+            echo "$HOME/.local/bin" >> $GITHUB_PATH                                                                                                                                           
+   
+        - name: Compile Darbitex package                                                                                                                                                      
+          working-directory: contracts                      
+          run: |                                                                                                                                                                              
+            aptos move compile \                            
+              --named-addresses darbitex=0x85d1e4047bde5c02b1915e5677b44ff5a6ba13452184d794da4658a4814efd30 \
+              --skip-fetch-latest-git-deps                                                                                                                                                    
+                                                                                                                                                                                              
+        - name: Run Move unit tests                                                                                                                                                           
+          working-directory: contracts                                                                                                                                                        
+          run: |                                                                                                                                                                              
+            aptos move test \                               
+              --named-addresses darbitex=0x85d1e4047bde5c02b1915e5677b44ff5a6ba13452184d794da4658a4814efd30 \
+              --skip-fetch-latest-git-deps             
