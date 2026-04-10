@@ -225,12 +225,39 @@ async function viewFn(fn, typeArgs, args) {
 function toRaw(amount, dec) { return Math.floor(amount * (10 ** dec)); }
 function fromRaw(raw, dec) { return Number(raw) / (10 ** dec); }
 
-function findToken(meta) {
-  const clean = m => m.replace(/^0x0+/, '0x');
+// Cache for tokens not in the static TOKENS config, keyed by normalized meta.
+// Populated lazily via FA metadata view — avoids hardcoding decimals for
+// arbitrary FA tokens encountered in on-chain pools.
+const TOKEN_CACHE = {};
+
+function normMeta(m) { return m.replace(/^0x0+/, '0x').toLowerCase(); }
+
+async function getTokenInfo(meta) {
+  const key = normMeta(meta);
+  // Static config first (APT/USDC/USDT)
   for (const [, t] of Object.entries(TOKENS)) {
-    if (clean(t.meta) === clean(meta)) return t;
+    if (normMeta(t.meta) === key) return t;
   }
-  return { symbol: meta.slice(0,8) + '...', decimals: 8, meta };
+  // Cached?
+  if (TOKEN_CACHE[key]) return TOKEN_CACHE[key];
+  // Fetch FA metadata from chain
+  try {
+    const res = await fetch(`${RPC}/accounts/${meta}/resource/0x1::fungible_asset::Metadata`);
+    if (!res.ok) throw new Error('FA metadata 404');
+    const d = await res.json();
+    const info = {
+      meta,
+      symbol: d.data.symbol || meta.slice(0, 6) + '...',
+      decimals: parseInt(d.data.decimals) || 0,
+    };
+    TOKEN_CACHE[key] = info;
+    return info;
+  } catch {
+    // Last-resort fallback: mark decimals=0 so raw value displays as integer
+    const info = { meta, symbol: meta.slice(0, 6) + '...', decimals: 0 };
+    TOKEN_CACHE[key] = info;
+    return info;
+  }
 }
 
 // ===== POOLS =====
@@ -248,11 +275,15 @@ async function loadPools() {
         ]);
         const metaA = tokens[0]?.inner || tokens[0];
         const metaB = tokens[1]?.inner || tokens[1];
+        const [tokenA, tokenB] = await Promise.all([
+          getTokenInfo(metaA),
+          getTokenInfo(metaB),
+        ]);
         pools.push({
           addr, reserve_a: info[0], reserve_b: info[1],
           lp_supply: info[2], paused: info[3],
           meta_a: metaA, meta_b: metaB,
-          token_a: findToken(metaA), token_b: findToken(metaB),
+          token_a: tokenA, token_b: tokenB,
           hooked: hook[0]?.vec?.length > 0,
         });
       } catch(e) { console.error('Pool error:', addr, e); }

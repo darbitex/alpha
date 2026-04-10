@@ -1,4 +1,4 @@
-const CACHE = 'darbitex-v7';
+const CACHE = 'darbitex-v8';
 const ASSETS = ['/', '/style.css', '/app.js', '/manifest.json', '/favicon.svg'];
 
 self.addEventListener('install', e => {
