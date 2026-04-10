@@ -70,6 +70,35 @@ running; after finalize they become hooked at `@darbitex`.
 | USDC | `0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b` | 6 | Circle native |
 | USDT | `0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b` | 6 | Tether native |
 
+## Governance
+
+Protocol admin and treasury are both multisig-controlled (moved from single
+wallet on 2026-04-10).
+
+| Role | Address | Threshold | Tool |
+|---|---|---|---|
+| Protocol admin | `0xf1b522effb90aef79395f97b9c39d6acbd8fdf84ec046361359a48de2e196566` | 3-of-5 | Petra Vault |
+| Protocol treasury | `0xdbce89113a975826028236f910668c3ff99c8db8981be6a448caa2f8836f9576` | 2-of-3 | Petra Vault |
+
+**What requires multisig approval:**
+- `pool::propose_admin` (change admin) — admin 3-of-5
+- `pool::set_treasury` — admin 3-of-5
+- `pool::admin_force_remove_hook` — admin 3-of-5
+- `pool::withdraw_protocol_fee` — admin 3-of-5 (routes to treasury multisig)
+- Treasury fee sweep (any transfer from treasury multisig) — treasury 2-of-3
+
+**What does NOT require multisig (permissionless):**
+- Swaps, liquidity add/remove, flash loans, hook auctions — user signs their own TX
+
+**What is still single-wallet (KNOWN RISK):**
+- **Package upgrades** (`aptos move publish`) are still signed by the original
+  deployer wallet `0x85d1e40...efd30`. This is an open single point of failure.
+  Compatible upgrades allow rewriting function bodies, so an attacker with this
+  key could drain pools via malicious upgrade. Two mitigation paths under
+  consideration: (1) migrate package auth to resource account + SignerCap
+  controlled by a multisig (one-way breaking change), or (2) freeze upgrades
+  permanently via `code::freeze_code_object` (no future bug fixes possible).
+
 ## Protocol parameters
 
 | Parameter | Value | Where |
